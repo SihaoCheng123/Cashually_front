@@ -67,7 +67,7 @@ const loginStyles = StyleSheet.create({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 45
+        marginTop: 35
     },
     logoName:{
         fontSize: 65,
