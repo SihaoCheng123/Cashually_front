@@ -16,5 +16,6 @@ export const AppTheme = {
         ...DefaultTheme.fonts,
         regular: 'Poppins-Regular',
         bold: 'Poppins-Bold',
+        logo: 'GreatVibes-Regular',
     }
 }

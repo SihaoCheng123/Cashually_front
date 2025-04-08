@@ -21,6 +21,7 @@ export default function App() {
     const [fontsLoaded] = useFonts({
         "Poppins-Regular": require("./assets/fonts/Poppins-Regular.ttf"),
         "Poppins-Bold": require("./assets/fonts/Poppins-Bold.ttf"),
+        "GreatVibes-Regular": require("./assets/fonts/GreatVibes-Regular.ttf"),
     })
     if (!fontsLoaded) {
         return <ActivityIndicator  size={30} color={AppTheme.colors.primary} />;
