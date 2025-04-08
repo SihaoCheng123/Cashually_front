@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         width: '100%',
         marginBottom: 23,
         backgroundColor: AppTheme.colors.background,
-        elevation: 5,
+        elevation: 2,
     },
     iconDataContainer:{
         display: "flex",

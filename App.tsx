@@ -9,11 +9,17 @@ import {PaperProvider} from "react-native-paper";
 import RegisterScreen from "./app/presentation/views/auth/register/Register";
 import LoginScreen from "./app/presentation/views/auth/login/Login";
 import TabNavigator from "./app/presentation/navigation/BottomTabNavigator";
+import IncomeScreen from "./app/presentation/views/transactions/income/Income";
+import ExpenseScreen from "./app/presentation/views/transactions/expense/Expense";
+import SavingScreen from "./app/presentation/views/transactions/saving/Saving";
 
 export type RootStackParamList = {
     RegisterScreen: undefined;
     LoginScreen: undefined;
     TabNavigator: undefined;
+    IncomeScreen: undefined;
+    ExpenseScreen: undefined;
+    SavingScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -37,6 +43,9 @@ export default function App() {
                         <Stack.Screen name="TabNavigator" component={TabNavigator} />
                         <Stack.Screen name="LoginScreen" component={LoginScreen} />
                         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+                        <Stack.Screen name="IncomeScreen" component={IncomeScreen} />
+                        <Stack.Screen name="ExpenseScreen" component={ExpenseScreen} />
+                        <Stack.Screen name="SavingScreen" component={SavingScreen} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </PaperProvider>

@@ -3,7 +3,6 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import {AppTheme} from "../../../theme/AppTheme";
 import {Button, TextInput} from "react-native-paper";
 import {useState} from "react";
-import registerStyles from "../register/StylesRegister";
 
 const LoginScreen = ({}) => {
     const [text, setText] = useState("");

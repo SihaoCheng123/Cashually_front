@@ -1,8 +1,8 @@
 import {createMaterialBottomTabNavigator,} from "react-native-paper/react-navigation";
 import React from "react"
-import GraphScreen from "../views/main/Graph";
-import HomeScreen from "../views/main/Home";
-import UserScreen from "../views/main/User";
+import GraphScreen from "../views/main/graph/Graph";
+import HomeScreen from "../views/main/home/Home";
+import UserScreen from "../views/main/user/User";
 import {Image, StyleSheet, View} from "react-native";
 import {AppTheme} from "../theme/AppTheme";
 import { Provider as PaperProvider } from 'react-native-paper';

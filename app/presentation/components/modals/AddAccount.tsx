@@ -1,4 +1,4 @@
-import {Modal,StyleSheet, Text, View} from "react-native";
+import {Keyboard, Modal, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import {AppTheme} from "../../theme/AppTheme";
 import {Button, TextInput} from "react-native-paper";
 import {useState} from "react";
@@ -9,9 +9,12 @@ interface AddAccountProps {
 }
 export const AddAccountModal = ({onClose}:AddAccountProps) => {
     const [text, setText] = useState("");
+
     return(
         <Modal transparent animationType="fade">
+            <TouchableWithoutFeedback onPress={() => { onClose(); Keyboard.dismiss(); }}>
             <View style={styles.modalBackground}>
+                <TouchableWithoutFeedback>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalTextContainer}>
                     <Text style={styles.newText}>New account</Text>
@@ -42,8 +45,11 @@ export const AddAccountModal = ({onClose}:AddAccountProps) => {
                             >Add</Button>
                         </View>
                     </View>
+
                 </View>
+                </TouchableWithoutFeedback>
             </View>
+            </TouchableWithoutFeedback>
         </Modal>
     )
 }
@@ -59,7 +65,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         padding: 20,
         borderRadius: 50,
-        width: "90%",
+        width: "95%",
     },
     modalTextContainer: {
         display: "flex",
@@ -77,7 +83,7 @@ const styles = StyleSheet.create({
         marginBottom: 21,
         display: "flex",
         flexDirection: "column",
-        marginHorizontal: 20
+        marginHorizontal: 15
     },
     inputText:{
         fontFamily: AppTheme.fonts.regular,
