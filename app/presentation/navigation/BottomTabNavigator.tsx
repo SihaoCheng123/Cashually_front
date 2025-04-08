@@ -22,7 +22,7 @@ function TabNavigator() {
                 pressColor={AppTheme.colors.white}
                 activeColor={ AppTheme.colors.primary}
                 inactiveColor={AppTheme.colors.background}
-                barStyle={{ backgroundColor: AppTheme.colors.black,
+                barStyle={{ backgroundColor: 'rgba(0,0,0,0.85)',
                     height: 70,
                     marginBottom: 24,
                     marginHorizontal: 20,

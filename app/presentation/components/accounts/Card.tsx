@@ -3,9 +3,10 @@ import {AccountInterface} from "../../../domain/entities/Account";
 import {AppTheme} from "../../theme/AppTheme";
 import {useState} from "react";
 interface IAccountCardProps {
-    accounts: AccountInterface[]
+    accounts: AccountInterface[],
+    openModal: () => void;
 }
-export const AccountCard = ({accounts}:IAccountCardProps) => {
+export const AccountCard = ({accounts, openModal}:IAccountCardProps) => {
     const dataWithAddCard = [...accounts, null];
     const [actualIndex, setIndex] = useState(0);
     const handleScroll = (event: any) => {
@@ -31,7 +32,7 @@ export const AccountCard = ({accounts}:IAccountCardProps) => {
 
                         return (
                             <View style={{...styles.cardContainer, alignItems: "center"}}>
-                                <Pressable onPress={() => console.log('Add')}>
+                                <Pressable onPress={openModal}>
                                     <Image source={require('../../../../assets/icons/add_account_icon.png')} />
                                 </Pressable>
                             </View>
