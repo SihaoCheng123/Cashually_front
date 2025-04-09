@@ -1,19 +1,32 @@
 import {Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View} from "react-native";
 import {AccountInterface} from "../../../domain/entities/Account";
 import {AppTheme} from "../../theme/AppTheme";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 interface IAccountCardProps {
     accounts: AccountInterface[],
     openModal: () => void;
+    onCardChange: (index: number) => void;
 }
-export const AccountCard = ({accounts, openModal}:IAccountCardProps) => {
+export const AccountCard = ({accounts, openModal, onCardChange}:IAccountCardProps) => {
     const dataWithAddCard = [...accounts, null];
     const [actualIndex, setIndex] = useState(0);
+
+    useEffect(() => {
+        if (actualIndex === 0){
+            onCardChange(actualIndex)
+        }
+
+    }, []);
+
     const handleScroll = (event: any) => {
 
         const contentOffsetX = event.nativeEvent.contentOffset.x;
         const newIndex = Math.floor(contentOffsetX / (Dimensions.get("window").width - 50));
-        setIndex(newIndex);
+        if (newIndex !== actualIndex){
+            setIndex(newIndex);
+            onCardChange(newIndex)
+        }
+
     };
     return (
         <View>

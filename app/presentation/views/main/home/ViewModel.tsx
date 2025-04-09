@@ -4,10 +4,13 @@ import Toast from "react-native-toast-message";
 import {AccountInterface} from "../../../../domain/entities/Account";
 import {useState} from "react";
 import {createAccountUseCase} from "../../../../domain/useCases/account/CreateAccountUseCase";
+import {getOperationListUseCase} from "../../../../domain/useCases/account/GetOperationList";
+import {TransactionInterface} from "../../../../domain/entities/Activity";
 
 const HomeViewModel = () =>{
 
     const [accounts, setAccounts] = useState<AccountInterface[]>([]);
+    const [transactions, setTransactions] = useState<TransactionInterface[]>([]);
 
     const getAccounts = async (slug: string) => {
         try{
@@ -32,6 +35,25 @@ const HomeViewModel = () =>{
             const response = await createAccountUseCase(account, slug)
             if (response.data) {
                 console.log("response data" + JSON.stringify(response.data.data))
+                setTransactions(response.data.data)
+            }
+        }catch(error) {
+            if (error instanceof Yup.ValidationError) {
+                Toast.show({
+                    type: "error",
+                    text1: error ? error.message : "",
+                    position: "bottom"
+                })
+            }
+        }
+    }
+
+    const getOperationList = async (account: AccountInterface) => {
+        try{
+            const response = await getOperationListUseCase(account)
+            if (response.data) {
+                console.log("response data" + JSON.stringify(response.data.data))
+                setTransactions(response.data.data)
             }
         }catch(error) {
             if (error instanceof Yup.ValidationError) {
@@ -47,7 +69,9 @@ const HomeViewModel = () =>{
     return{
         accounts,
         getAccounts,
-        createAccount
+        createAccount,
+        getOperationList,
+        transactions,
     }
 }
 

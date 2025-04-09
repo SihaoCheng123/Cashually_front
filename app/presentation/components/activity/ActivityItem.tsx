@@ -10,8 +10,8 @@ export const ActivityItem = ({transactions}:IActivityItemProps) => {
 
     if (transactions.length === 0) {
         return (
-            <View>
-                <Text>No transactions yet</Text>
+            <View style={{...styles.mainContainer, width: "100%", height: "auto", justifyContent: "center", alignItems: "center", marginBottom: 0}}>
+                <Text style={styles.title}>No transactions yet</Text>
             </View>
         )
     }else {

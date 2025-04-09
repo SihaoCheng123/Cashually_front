@@ -4,7 +4,6 @@ import {AppTheme} from "../../../theme/AppTheme";
 import {AccountCard} from "../../../components/accounts/Card";
 import {AccountInterface} from "../../../../domain/entities/Account";
 import {ActivityItem} from "../../../components/activity/ActivityItem";
-import {TransactionInterface} from "../../../../domain/entities/Activity";
 import {useContext, useEffect, useState} from "react";
 import {AddAccountModal} from "../../../components/modals/AddAccount";
 import stylesHome from "./StylesHome";
@@ -14,13 +13,19 @@ import {UserContext} from "../../../context/UserContext";
 import Toast from "react-native-toast-message";
 
 const HomeScreen = ({navigation}:PropsStackNavigation) => {
-    const {accounts, getAccounts, createAccount} = HomeViewModel()
+    const {accounts, getAccounts, createAccount, transactions, getOperationList} = HomeViewModel()
     const {user} = useContext(UserContext)
-
+    const [localAccount, setLocalAccount] = useState<AccountInterface[]>([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const openModal = () => {
         setIsModalVisible(true);
     };
+
+    const handleCardChange = async (index: number) => {
+        if (accounts.length > 0) {
+            await getOperationList(accounts[index]);
+        }
+    }
 
     useEffect(() => {
         const handleAccountFetching  = async () =>{
@@ -30,6 +35,10 @@ const HomeScreen = ({navigation}:PropsStackNavigation) => {
         }
        handleAccountFetching()
     },[user.slug])
+
+    useEffect(() => {
+        setLocalAccount(accounts)
+    }, [accounts]);
 
     const handleModalSubmit = async (modalData:{name: string, balance: number}) => {
         if (user && user?.slug){
@@ -43,16 +52,6 @@ const HomeScreen = ({navigation}:PropsStackNavigation) => {
 
     }
 
-    const transactions: TransactionInterface[] = [
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-    ]
     return (
         <SafeAreaView style={stylesHome.mainContainer}>
 
@@ -63,7 +62,7 @@ const HomeScreen = ({navigation}:PropsStackNavigation) => {
                 </Pressable>
             </View>
             <View style={stylesHome.cardsContainer}>
-                <AccountCard accounts={accounts} openModal={openModal}/>
+                <AccountCard accounts={accounts} openModal={openModal} onCardChange={handleCardChange}/>
             </View>
             <View style={stylesHome.sectionContainer}>
                 <View style={stylesHome.eachSection}>
