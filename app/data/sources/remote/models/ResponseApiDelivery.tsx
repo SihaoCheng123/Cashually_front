@@ -7,8 +7,11 @@ export interface ApiDeliveryResponse {
 
 }
 
-export interface ApiResponse<T = any> {
-    success?: string;
+export interface ApiResponse {
     error?: string;
-    data: T,
+    data: {
+        success?: string;
+        error?: string;
+        data: any;
+    },
 }

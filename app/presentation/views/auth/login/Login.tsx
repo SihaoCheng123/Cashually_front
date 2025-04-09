@@ -5,21 +5,28 @@ import {Button, TextInput} from "react-native-paper";
 import loginStyles from "./StylesLogin";
 import {PropsStackNavigation} from "../../../interfaces/StackNav";
 import LoginViewModel from "./ViewModel";
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import {UserContext} from "../../../context/UserContext";
 import Toast from "react-native-toast-message";
 
 const LoginScreen = ({navigation}: PropsStackNavigation) => {
     const {email, password, onChangeLogin, login} = LoginViewModel()
-    const {getUserSession} = useContext(UserContext)
+    const {user} = useContext(UserContext)
     const handleLogin = async () => {
         const response = await login()
-        if (response?.data) {
+        if (response?.data.data) {
                 setTimeout(() => {
-                    navigation.navigate("TabNavigator");
+                    navigation.replace("TabNavigator");
                 }, 1000);
         }
     }
+
+    useEffect(() => {
+        if (user && user?.tokens){
+            navigation.replace("TabNavigator");
+        }
+    }, [user]);
+
     return (
         <SafeAreaView style={loginStyles.mainContainer}>
 

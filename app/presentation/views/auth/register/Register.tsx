@@ -12,7 +12,7 @@ const RegisterScreen = ({navigation}: PropsStackNavigation) => {
     const {onChangeRegister, register, age, password, confirmPassword, phone, email, name} = RegisterViewModel()
     const handleRegister = async () => {
         const response = await register()
-        if (response?.data){
+        if (response?.data.data){
             setTimeout(() => {
                 navigation.navigate("LoginScreen");
             }, 1000);
@@ -78,7 +78,7 @@ const RegisterScreen = ({navigation}: PropsStackNavigation) => {
                     <Text style={registerStyles.inputText}>Phone</Text>
                     <TextInput mode={"outlined"} style={registerStyles.input}
                                onChangeText={(text) => onChangeRegister("phone", text)}
-                               keyboardType={"default"}
+                               keyboardType={"number-pad"}
                                theme={{roundness:15, colors:{
                                        primary: AppTheme.colors.grey,
                                        background: AppTheme.colors.white}}}/>

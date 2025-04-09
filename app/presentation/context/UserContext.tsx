@@ -14,11 +14,12 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
     useEffect(() => {
         getUserSession()
+        console.log(user)
     },[])
 
     const getUserSession = async () => {
         const newUser = await getUserUseCase()
-        console.log(newUser)
+        console.log("Session open")
         setUser(newUser)
     }
 

@@ -1,4 +1,4 @@
-import {UserInterface, UserLoginRequest, UserLoginResponse} from "../../domain/entities/User";
+import {UserInterface, UserLoginRequest} from "../../domain/entities/User";
 import {AuthRepository} from "../../domain/repositories/AuthRepository";
 import {ApiResponse} from "../sources/remote/models/ResponseApiDelivery";
 import {ApiDelivery} from "../sources/remote/api/ApiDelivery";
@@ -6,7 +6,7 @@ import {AxiosError} from "axios";
 import Toast from "react-native-toast-message";
 
 export class AuthRepositoryImpl implements AuthRepository {
-    async register(user:UserInterface): Promise<ApiResponse<UserInterface>> {
+    async register(user:UserInterface): Promise<ApiResponse> {
         try{
             const response = await ApiDelivery.post("/register/", user)
             Toast.show({
@@ -32,7 +32,7 @@ export class AuthRepositoryImpl implements AuthRepository {
         }
     }
 
-    async login(user:UserLoginRequest): Promise<ApiResponse<UserLoginResponse>> {
+    async login(user:UserLoginRequest): Promise<ApiResponse> {
         try{
             const response = await ApiDelivery.post("/login/", user)
             Toast.show({

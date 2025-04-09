@@ -31,7 +31,8 @@ const LoginViewModel = () =>{
             const response = await LoginUseCase(dataSend)
             console.log("RESULT: " + JSON.stringify(response));
             if (response.data){
-                await saveUserUseCase(response.data as UserLoginResponse)
+                await saveUserUseCase(response.data.data as UserLoginResponse)
+                console.log("response data" + JSON.stringify(response.data.data))
             }
             return response
         }catch (error){
