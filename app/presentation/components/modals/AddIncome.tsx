@@ -3,9 +3,9 @@ import {
     FlatList,
     Keyboard,
     Modal,
+    Pressable,
     StyleSheet,
     Text,
-    TouchableOpacity,
     TouchableWithoutFeedback,
     View
 } from "react-native";
@@ -63,7 +63,6 @@ export const AddIncomeModal = ({onClose, onSubmit}:AddIncomeProps) => {
             setAccount(account)
             setModalVisible(false);
         }
-
     };
 
     const parsedAmount = Number(amount);
@@ -138,9 +137,9 @@ export const AddIncomeModal = ({onClose, onSubmit}:AddIncomeProps) => {
                                         data={localAccounts}
                                         keyExtractor={(item, index) => index.toString()}
                                         renderItem={({ item }) => (
-                                            <TouchableOpacity onPress={() => handleSelectAccount(item.name)}>
+                                            <Pressable onPress={() => handleSelectAccount(item.name)}>
                                                 <Text style={styles.accountItem}>{item.name}</Text>
-                                            </TouchableOpacity>
+                                            </Pressable>
                                         )}
                                         style={styles.dropdownList}
                                     />

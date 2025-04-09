@@ -19,7 +19,6 @@ const IncomeScreen = ({navigation}: PropsStackNavigation) => {
     const {user} = useContext(UserContext)
     useEffect(() => {
         if (user && user.slug){
-            console.log(user.slug);
             getMonthlyIncome(user.slug)
         }
     },[user.slug])

@@ -5,26 +5,38 @@ import {ActivityItem} from "../../../components/activity/ActivityItem";
 import {PropsStackNavigation} from "../../../interfaces/StackNav";
 import {TransactionInterface} from "../../../../domain/entities/Activity";
 import {FAB} from "react-native-paper";
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {AddExpenseModal} from "../../../components/modals/AddExpense";
 import stylesExpense from "./StylesExpense";
+import {UserContext} from "../../../context/UserContext";
+import ExpenseViewModel from "./ViewModel";
+import {AccountInterface} from "../../../../domain/entities/Account";
 
 const ExpenseScreen = ({navigation}: PropsStackNavigation) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const {makeExpense, getMonthlyExpense, expenseList, total} = ExpenseViewModel()
+    const {user} = useContext(UserContext)
 
-    const transactions: TransactionInterface[] = [
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-        {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
-    ]
+    useEffect(() => {
+        if (user && user.slug){
+            getMonthlyExpense(user.slug)
+        }
+    },[user.slug])
+
+    const handleModalSubmit = async (modalData:{
+        category:string,
+        amount:number,
+        date: string,
+        account: AccountInterface,
+        description: string}) => {
+        if (modalData.account.slug){
+            const expenseData: TransactionInterface = {
+                ...modalData
+            }
+            await makeExpense(expenseData, modalData.account.slug)
+            await getMonthlyExpense(user.slug)
+        }
+    }
 
     const date = new Date();
     const monthName = date.toLocaleString('en-EN', { month: 'long' });
@@ -46,20 +58,20 @@ const ExpenseScreen = ({navigation}: PropsStackNavigation) => {
                     <View style={{...stylesExpense.background, backgroundColor: AppTheme.colors.white, opacity: 0.4}}></View>
                     <View style={stylesExpense.dataContainer}>
                         <Text style={stylesExpense.totalText}>Total expenses</Text>
-                        <Text style={stylesExpense.totalAmount}>- 500 €</Text>
+                        <Text style={stylesExpense.totalAmount}>- {total} €</Text>
                     </View>
                     <Image source={require('../../../../../assets/icons/fall_icon.png')} />
                 </View>
             </View>
             <Text style={stylesExpense.activityText}>Activity</Text>
             <View style={stylesExpense.activityContainer}>
-                <ActivityItem transactions={transactions}/>
+                <ActivityItem transactions={expenseList}/>
             </View>
             <FAB onPress={() => {setIsModalVisible(true)}} style={stylesExpense.fab}
                  color={AppTheme.colors.tertiary}
                  icon={require('../../../../../assets/icons/plus_icon.png')}/>
             {isModalVisible &&(
-                <AddExpenseModal onClose={() => setIsModalVisible(false)}/>
+                <AddExpenseModal onClose={() => setIsModalVisible(false)} onSubmit={handleModalSubmit}/>
             )}
         </SafeAreaView>
     )
