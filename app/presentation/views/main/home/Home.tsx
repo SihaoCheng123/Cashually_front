@@ -11,12 +11,14 @@ import {PropsStackNavigation} from "../../../interfaces/StackNav";
 import HomeViewModel from "./ViewModel";
 import {UserContext} from "../../../context/UserContext";
 import Toast from "react-native-toast-message";
+import {useAccountContext} from "../../../context/AccountContext";
 
 const HomeScreen = ({navigation}:PropsStackNavigation) => {
     const {accounts, getAccounts, createAccount, transactions, getOperationList} = HomeViewModel()
     const {user} = useContext(UserContext)
     const [localAccount, setLocalAccount] = useState<AccountInterface[]>([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
+
     const openModal = () => {
         setIsModalVisible(true);
     };

@@ -2,15 +2,17 @@ import {getUserAccountsUseCase} from "../../../../domain/useCases/account/GetUse
 import * as Yup from "yup";
 import Toast from "react-native-toast-message";
 import {AccountInterface} from "../../../../domain/entities/Account";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {createAccountUseCase} from "../../../../domain/useCases/account/CreateAccountUseCase";
 import {getOperationListUseCase} from "../../../../domain/useCases/account/GetOperationList";
 import {TransactionInterface} from "../../../../domain/entities/Activity";
+import {useAccountContext} from "../../../context/AccountContext";
 
 const HomeViewModel = () =>{
 
     const [accounts, setAccounts] = useState<AccountInterface[]>([]);
     const [transactions, setTransactions] = useState<TransactionInterface[]>([]);
+    const {setLocalAccounts} = useAccountContext()
 
     const getAccounts = async (slug: string) => {
         try{
@@ -18,6 +20,7 @@ const HomeViewModel = () =>{
             if (response.data){
                 console.log("response data" + JSON.stringify(response.data.data))
                 setAccounts(response.data.data)
+                setLocalAccounts(response.data.data)
             }
         }catch(error){
             if (error instanceof Yup.ValidationError) {

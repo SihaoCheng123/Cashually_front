@@ -13,6 +13,7 @@ import IncomeScreen from "./app/presentation/views/transactions/income/Income";
 import ExpenseScreen from "./app/presentation/views/transactions/expense/Expense";
 import SavingScreen from "./app/presentation/views/transactions/saving/Saving";
 import {UserProvider} from "./app/presentation/context/UserContext";
+import {AccountProvider} from "./app/presentation/context/AccountContext";
 
 export type RootStackParamList = {
     RegisterScreen: undefined;
@@ -40,16 +41,18 @@ export default function App() {
         <SafeAreaProvider>
             <PaperProvider>
                 <UserProvider>
-                    <NavigationContainer>
-                        <Stack.Navigator screenOptions={{ headerShown: false }}>
-                            <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-                            <Stack.Screen name="TabNavigator" component={TabNavigator} />
-                            <Stack.Screen name="IncomeScreen" component={IncomeScreen} />
-                            <Stack.Screen name="ExpenseScreen" component={ExpenseScreen} />
-                            <Stack.Screen name="SavingScreen" component={SavingScreen} />
-                        </Stack.Navigator>
-                    </NavigationContainer>
+                    <AccountProvider>
+                        <NavigationContainer>
+                            <Stack.Navigator screenOptions={{ headerShown: false }}>
+                                <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                                <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+                                <Stack.Screen name="TabNavigator" component={TabNavigator} />
+                                <Stack.Screen name="IncomeScreen" component={IncomeScreen} />
+                                <Stack.Screen name="ExpenseScreen" component={ExpenseScreen} />
+                                <Stack.Screen name="SavingScreen" component={SavingScreen} />
+                            </Stack.Navigator>
+                        </NavigationContainer>
+                    </AccountProvider>
                 </UserProvider>
             </PaperProvider>
         </SafeAreaProvider>

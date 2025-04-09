@@ -54,6 +54,11 @@ export const ActivityItem = ({transactions}:IActivityItemProps) => {
                                     <Text style={styles.date}>{formattedDate}</Text>
                                 </View>
                             </View>
+                            {item.account_name &&(
+                                <View style={{...styles.dataContainer, justifyContent: "center", alignItems: "center"}}>
+                                    <Text style={{...styles.date, opacity: 1, fontWeight: 500}}>{item.account_name}</Text>
+                                </View>
+                            )}
 
                             <View style={styles.amountContainer}>
                                 <Text style={styles.amountText}>{item.concept? "+" : "-"} {item.amount} €</Text>

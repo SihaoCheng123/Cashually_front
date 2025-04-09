@@ -3,25 +3,36 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import {AppTheme} from "../../../theme/AppTheme";
 import {PropsStackNavigation} from "../../../interfaces/StackNav";
 import {ActivityItem} from "../../../components/activity/ActivityItem";
-import {TransactionInterface} from "../../../../domain/entities/Activity";
 import {FAB} from "react-native-paper";
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {AddIncomeModal} from "../../../components/modals/AddIncome";
 import stylesIncome from "./StylesIncome";
+import Toast from "react-native-toast-message";
+import IncomeViewModel from "./ViewModel";
+import {UserContext} from "../../../context/UserContext";
+import {AccountInterface} from "../../../../domain/entities/Account";
+import {TransactionInterface} from "../../../../domain/entities/Activity";
 
 const IncomeScreen = ({navigation}: PropsStackNavigation) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const transactions: TransactionInterface[] = [
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-        {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
-    ]
+    const {makeIncome, getMonthlyIncome, incomeList, total} = IncomeViewModel()
+    const {user} = useContext(UserContext)
+    useEffect(() => {
+        if (user && user.slug){
+            console.log(user.slug);
+            getMonthlyIncome(user.slug)
+        }
+    },[user.slug])
+
+    const handleModalSubmit = async (modalData:{concept: string, amount: number, date:string, account:AccountInterface}) => {
+        if (modalData.account.slug){
+            const incomeData: TransactionInterface = {
+                ...modalData
+            }
+            await makeIncome(incomeData, modalData.account.slug)
+            await getMonthlyIncome(user.slug)
+        }
+    }
 
     const date = new Date();
     const monthName = date.toLocaleString('en-EN', { month: 'long' });
@@ -42,21 +53,23 @@ const IncomeScreen = ({navigation}: PropsStackNavigation) => {
                     <View style={{...stylesIncome.background, backgroundColor: AppTheme.colors.white, opacity: 0.4}}></View>
                     <View style={stylesIncome.dataContainer}>
                         <Text style={stylesIncome.totalText}>Total income</Text>
-                        <Text style={stylesIncome.totalAmount}>+ 500 €</Text>
+                        <Text style={stylesIncome.totalAmount}>+ {total} €</Text>
                     </View>
                     <Image source={require('../../../../../assets/icons/rise_icon.png')} />
                 </View>
             </View>
             <Text style={stylesIncome.activityText}>Activity</Text>
             <View style={stylesIncome.activityContainer}>
-                <ActivityItem transactions={transactions}/>
+                <ActivityItem transactions={incomeList}/>
             </View>
         <FAB onPress={() => setIsModalVisible(true)} style={stylesIncome.fab}
              color={AppTheme.colors.primary}
         icon={require('../../../../../assets/icons/plus_icon.png')}/>
             {isModalVisible &&(
-                <AddIncomeModal onClose={() => setIsModalVisible(false)}/>
+                <AddIncomeModal onClose={() => setIsModalVisible(false)} onSubmit={handleModalSubmit}/>
             )}
+
+            <Toast/>
         </SafeAreaView>
     )
 }

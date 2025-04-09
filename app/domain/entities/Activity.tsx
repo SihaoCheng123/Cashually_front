@@ -4,4 +4,5 @@ export interface TransactionInterface{
     category?: string,
     description?: string,
     date: string,
+    account_name?: string,
 }
