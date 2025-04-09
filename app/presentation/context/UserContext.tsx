@@ -18,6 +18,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
     const getUserSession = async () => {
         const newUser = await getUserUseCase()
+        console.log(newUser)
         setUser(newUser)
     }
 

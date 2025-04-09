@@ -1,7 +1,7 @@
 import {UserRepositoryImpl} from "../../../data/repositories/UserLocalRepository";
 
-const {deleteUser} = new UserRepositoryImpl()
+const repository = new UserRepositoryImpl()
 
 export const deleteUserUseCase = async () =>{
-    return await deleteUser()
+    return await repository.deleteUser()
 }

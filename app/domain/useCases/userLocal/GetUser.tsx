@@ -1,8 +1,7 @@
 import {UserRepositoryImpl} from "../../../data/repositories/UserLocalRepository";
-import {UserLoginResponse} from "../../entities/User";
 
-const {getUser} = new UserRepositoryImpl()
+const repository = new UserRepositoryImpl()
 
 export const getUserUseCase = async () =>{
-    return await getUser()
+    return await repository.getUser()
 }

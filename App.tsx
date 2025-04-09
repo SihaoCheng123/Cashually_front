@@ -42,9 +42,9 @@ export default function App() {
                 <UserProvider>
                     <NavigationContainer>
                         <Stack.Navigator screenOptions={{ headerShown: false }}>
-                            <Stack.Screen name="TabNavigator" component={TabNavigator} />
                             <Stack.Screen name="LoginScreen" component={LoginScreen} />
                             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+                            <Stack.Screen name="TabNavigator" component={TabNavigator} />
                             <Stack.Screen name="IncomeScreen" component={IncomeScreen} />
                             <Stack.Screen name="ExpenseScreen" component={ExpenseScreen} />
                             <Stack.Screen name="SavingScreen" component={SavingScreen} />

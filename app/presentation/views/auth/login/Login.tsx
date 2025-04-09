@@ -1,10 +1,12 @@
-import {Image, Pressable, StyleSheet, Text, View} from "react-native";
+import {Image, Pressable, Text, View} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {AppTheme} from "../../../theme/AppTheme";
 import {Button, TextInput} from "react-native-paper";
 import {useState} from "react";
+import loginStyles from "./StylesLogin";
+import {PropsStackNavigation} from "../../../interfaces/StackNav";
 
-const LoginScreen = ({}) => {
+const LoginScreen = ({navigation}: PropsStackNavigation) => {
     const [text, setText] = useState("");
     return (
         <SafeAreaView style={loginStyles.mainContainer}>
@@ -46,7 +48,7 @@ const LoginScreen = ({}) => {
 
             <View style={loginStyles.registerContainer}>
                 <Text style={loginStyles.haveAccountText}>Don't have an account? </Text>
-                <Pressable>
+                <Pressable onPress={() => navigation.navigate("RegisterScreen")}>
                     <Text style={loginStyles.loginText}>Sign in</Text>
                 </Pressable>
             </View>
@@ -54,79 +56,5 @@ const LoginScreen = ({}) => {
     )
 };
 
-const loginStyles = StyleSheet.create({
-    mainContainer: {
-        backgroundColor: AppTheme.colors.background,
-        flex: 1,
-        padding: 16,
-        display: "flex",
-        flexDirection: "column",
-    },
-    logoContainer:{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 35
-    },
-    logoName:{
-        fontSize: 65,
-        textAlign: "center",
-        fontFamily: AppTheme.fonts.logo,
-        color: AppTheme.colors.black,
-        marginVertical: 10
 
-    },
-    inputContainer:{
-        marginBottom: 21,
-        display: "flex",
-        flexDirection: "column",
-        marginHorizontal: 33
-    },
-    inputText:{
-        fontFamily: AppTheme.fonts.regular,
-        fontSize: 16,
-        paddingLeft: 10,
-        paddingBottom: 5
-    },
-    input:{
-
-    },
-    forgotText:{
-        textAlign: "right",
-        fontFamily: AppTheme.fonts.regular,
-        fontSize: 16,
-        color: AppTheme.colors.grey,
-        marginTop: 9
-    },
-    buttonContainer:{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    button:{
-        width: "50%",
-        marginTop: 40,
-        borderRadius: 15,
-        height: 53,
-    },
-    registerContainer:{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 46
-    },
-    haveAccountText:{
-        fontSize: 16,
-        fontFamily: AppTheme.fonts.regular,
-        color: AppTheme.colors.grey
-    },
-    loginText:{
-        color: AppTheme.colors.black,
-        textDecorationLine: "underline",
-        fontSize: 16,
-        fontFamily: AppTheme.fonts.regular,
-    },
-
-})
 export default LoginScreen;

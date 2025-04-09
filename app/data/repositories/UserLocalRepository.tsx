@@ -8,7 +8,7 @@ export class UserRepositoryImpl implements UserLocalRepository {
         await save("user", user)
     }
 
-    async getUser(): Promise<UserLoginResponse> {
+    async getUser(): Promise<UserLoginResponse|null> {
         const {getUser} = LocalSecureStorage()
         return await getUser("user")
     }

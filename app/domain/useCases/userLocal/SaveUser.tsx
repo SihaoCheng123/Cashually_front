@@ -1,8 +1,8 @@
 import {UserRepositoryImpl} from "../../../data/repositories/UserLocalRepository";
 import {UserLoginResponse} from "../../entities/User";
 
-const {save} = new UserRepositoryImpl()
+const repository = new UserRepositoryImpl()
 
 export const saveUserUseCase = async (user: UserLoginResponse) =>{
-    return await save(user)
+    return await repository.save(user)
 }

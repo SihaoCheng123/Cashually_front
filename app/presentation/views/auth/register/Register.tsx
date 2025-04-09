@@ -1,27 +1,23 @@
 import {Pressable, Text, View} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {AppTheme} from "../../../theme/AppTheme";
-import {Button, Menu, TextInput} from "react-native-paper";
-import {useState} from "react";
+import {Button, TextInput} from "react-native-paper";
 import registerStyles from "./StylesRegister";
+import {PropsStackNavigation} from "../../../interfaces/StackNav";
+import Toast from "react-native-toast-message";
+import RegisterViewModel from "./ViewModel";
 
+const RegisterScreen = ({navigation}: PropsStackNavigation) => {
 
-const RegisterScreen = () => {
-    const [visible, setVisible] = useState(false);
-    const [selectedAge, setSelectedAge] = useState('18');
-    const [anchor, setAnchor] = useState(null);
-
-    const showMenu = (event: any) => {
-        setAnchor(event.nativeEvent.target);
-        setVisible(true);
-    };
-    const hideMenu = () => setVisible(false);
-
-    const selectAge = (age: string) => {
-        setSelectedAge(age);
-        hideMenu();
-    };
-    const [text, setText] = useState("");
+    const {onChangeRegister, register, age, password, confirmPassword, phone, email, name, success} = RegisterViewModel()
+    const handleRegister = async () => {
+        await register()
+        if (success){
+            setTimeout(() => {
+                navigation.navigate("LoginScreen");
+            }, 1000);
+        }
+    }
 
     return (
         <SafeAreaView style={registerStyles.mainContainer}>
@@ -31,7 +27,8 @@ const RegisterScreen = () => {
             <View style={registerStyles.inputContainer}>
                 <Text style={registerStyles.inputText}>Name</Text>
                 <TextInput mode={"outlined"} style={registerStyles.input}
-                           value={text} onChangeText={setText}
+                           onChangeText={(text) => onChangeRegister("name", text)}
+                           keyboardType={"default"}
                            theme={{roundness:15, colors:{
                                    primary: AppTheme.colors.grey,
                                    background: AppTheme.colors.white}}}/>
@@ -39,7 +36,8 @@ const RegisterScreen = () => {
             <View style={registerStyles.inputContainer}>
                 <Text style={registerStyles.inputText}>Email</Text>
                 <TextInput mode={"outlined"} style={registerStyles.input}
-                           value={text} onChangeText={setText}
+                           onChangeText={(text) => onChangeRegister("email", text)}
+                           keyboardType={"email-address"}
                            theme={{roundness:15, colors:{
                                primary: AppTheme.colors.grey,
                                background: AppTheme.colors.white}}}/>
@@ -47,7 +45,10 @@ const RegisterScreen = () => {
             <View style={registerStyles.inputContainer}>
                 <Text style={registerStyles.inputText}>Password</Text>
                 <TextInput mode={"outlined"} style={registerStyles.input}
-                           value={text} onChangeText={setText}
+                           onChangeText={(text) => onChangeRegister("password", text)}
+                           keyboardType={"default"}
+                           secureTextEntry={true}
+                           right={<TextInput.Icon icon="eye" />}
                            theme={{roundness:15, colors:{
                                    primary: AppTheme.colors.grey,
                                    background: AppTheme.colors.white}}}/>
@@ -55,7 +56,10 @@ const RegisterScreen = () => {
             <View style={registerStyles.inputContainer}>
                 <Text style={registerStyles.inputText}>Confirm password</Text>
                 <TextInput mode={"outlined"} style={registerStyles.input}
-                           value={text} onChangeText={setText}
+                           onChangeText={(text) => onChangeRegister("confirmPassword", text)}
+                           secureTextEntry={true}
+                           keyboardType={"default"}
+                           right={<TextInput.Icon icon="eye" />}
                            theme={{roundness:15, colors:{
                                    primary: AppTheme.colors.grey,
                                    background: AppTheme.colors.white}}}/>
@@ -64,7 +68,8 @@ const RegisterScreen = () => {
                 <View style={registerStyles.ageContainer}>
                     <Text style={registerStyles.inputText}>Age</Text>
                     <TextInput mode={"outlined"} style={registerStyles.input}
-                               value={selectedAge} onPress={showMenu}
+                               onChangeText={(text) => onChangeRegister("age", text)}
+                               keyboardType={"numeric"}
                                theme={{roundness:15, colors:{
                                        primary: AppTheme.colors.grey,
                                        background: AppTheme.colors.white}}}/>
@@ -72,7 +77,8 @@ const RegisterScreen = () => {
                 <View style={registerStyles.phoneContainer}>
                     <Text style={registerStyles.inputText}>Phone</Text>
                     <TextInput mode={"outlined"} style={registerStyles.input}
-                               value={text} onChangeText={setText}
+                               onChangeText={(text) => onChangeRegister("phone", text)}
+                               keyboardType={"default"}
                                theme={{roundness:15, colors:{
                                        primary: AppTheme.colors.grey,
                                        background: AppTheme.colors.white}}}/>
@@ -84,26 +90,16 @@ const RegisterScreen = () => {
                         textColor={AppTheme.colors.background}
                         labelStyle={{fontFamily: AppTheme.fonts.regular, fontSize:20, lineHeight: 30}}
                         style={registerStyles.button}
-                >Register</Button>
+                        onPress={() => {handleRegister()}}>Register</Button>
             </View>
             <View style={registerStyles.loginContainer}>
                 <Text style={registerStyles.haveAccountText}>Already have an account? </Text>
-                <Pressable>
+                <Pressable onPress={() => navigation.navigate("LoginScreen")}>
                     <Text style={registerStyles.loginText}>Log in</Text>
                 </Pressable>
             </View>
-            <Menu
-                visible={visible}
-                onDismiss={hideMenu}
-                anchor={anchor}>
-                {[...Array(100).keys()].map((age) => (
-                    <Menu.Item
-                        key={age}
-                        onPress={() => selectAge((age + 1).toString())}
-                        title={(age + 1).toString()}
-                    />
-                ))}
-            </Menu>
+
+            <Toast/>
         </SafeAreaView>
     )
 }
