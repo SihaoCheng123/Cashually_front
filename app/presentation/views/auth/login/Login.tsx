@@ -2,12 +2,24 @@ import {Image, Pressable, Text, View} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {AppTheme} from "../../../theme/AppTheme";
 import {Button, TextInput} from "react-native-paper";
-import {useState} from "react";
 import loginStyles from "./StylesLogin";
 import {PropsStackNavigation} from "../../../interfaces/StackNav";
+import LoginViewModel from "./ViewModel";
+import {useContext} from "react";
+import {UserContext} from "../../../context/UserContext";
+import Toast from "react-native-toast-message";
 
 const LoginScreen = ({navigation}: PropsStackNavigation) => {
-    const [text, setText] = useState("");
+    const {email, password, onChangeLogin, login} = LoginViewModel()
+    const {getUserSession} = useContext(UserContext)
+    const handleLogin = async () => {
+        const response = await login()
+        if (response?.data) {
+                setTimeout(() => {
+                    navigation.navigate("TabNavigator");
+                }, 1000);
+        }
+    }
     return (
         <SafeAreaView style={loginStyles.mainContainer}>
 
@@ -20,7 +32,8 @@ const LoginScreen = ({navigation}: PropsStackNavigation) => {
             <View style={loginStyles.inputContainer}>
                 <Text style={loginStyles.inputText}>Email</Text>
                 <TextInput mode={"outlined"} style={loginStyles.input}
-                           value={text} onChangeText={setText}
+                           onChangeText={(text) => onChangeLogin("email", text)}
+                           keyboardType={"email-address"}
                            theme={{roundness:15, colors:{
                                    primary: AppTheme.colors.grey,
                                    background: AppTheme.colors.white}}}/>
@@ -29,7 +42,10 @@ const LoginScreen = ({navigation}: PropsStackNavigation) => {
             <View style={loginStyles.inputContainer}>
                 <Text style={loginStyles.inputText}>Password</Text>
                 <TextInput mode={"outlined"} style={loginStyles.input}
-                           value={text} onChangeText={setText}
+                           onChangeText={(text) => onChangeLogin("password", text)}
+                           keyboardType={"default"}
+                           secureTextEntry={true}
+                           right={<TextInput.Icon icon="eye" />}
                            theme={{roundness:15, colors:{
                                    primary: AppTheme.colors.grey,
                                    background: AppTheme.colors.white}}}/>
@@ -43,6 +59,7 @@ const LoginScreen = ({navigation}: PropsStackNavigation) => {
                         textColor={AppTheme.colors.background}
                         labelStyle={{fontFamily: AppTheme.fonts.regular, fontSize:20, lineHeight: 30}}
                         style={loginStyles.button}
+                        onPress={handleLogin}
                 >Log in</Button>
             </View>
 
@@ -52,6 +69,7 @@ const LoginScreen = ({navigation}: PropsStackNavigation) => {
                     <Text style={loginStyles.loginText}>Sign in</Text>
                 </Pressable>
             </View>
+        <Toast/>
         </SafeAreaView>
     )
 };

@@ -35,11 +35,26 @@ export class AuthRepositoryImpl implements AuthRepository {
     async login(user:UserLoginRequest): Promise<ApiResponse<UserLoginResponse>> {
         try{
             const response = await ApiDelivery.post("/login/", user)
+            Toast.show({
+                type: "success",
+                text1: response.data.success,
+                position: "bottom"
+            })
             return Promise.resolve(response)
         }catch (error){
-            let e = (error as AxiosError)
-            console.log("Error:" + JSON.stringify(e.response?.data))
-            return Promise.resolve(JSON.parse(JSON.stringify(e.response?.data)) as ApiResponse)
+            let e = (error as AxiosError<{error: string}>)
+            if (e.response?.data) {
+                console.log("Error:", e.response.data.error);
+                Toast.show({
+                    type: "error",
+                    text1: e.response.data.error,
+                    position: "bottom"
+                })
+                return e.response.data as ApiResponse;
+            } else {
+                console.log("Unknown error:", error);
+                return Promise.resolve({ error: "Unknown error:" } as ApiResponse);
+            }
         }
     }
 }

@@ -5,7 +5,6 @@ import {RegisterUseCase} from "../../../../domain/useCases/auth/RegisterUseCase"
 import {UserInterface} from "../../../../domain/entities/User";
 
 const RegisterViewModel = () => {
-    const [success, setSuccess] = useState(false)
 
     const [values, setValues] = useState({
         name: "",
@@ -44,7 +43,7 @@ const RegisterViewModel = () => {
             }
             const response = await RegisterUseCase(dataSend)
             console.log("RESULT: " + JSON.stringify(response));
-            setSuccess(true)
+            return response
 
         }catch (error){
             if (error instanceof Yup.ValidationError) {
@@ -61,7 +60,6 @@ const RegisterViewModel = () => {
         ...values,
         onChangeRegister,
         register,
-        success
     }
 }
 

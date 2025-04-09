@@ -9,10 +9,10 @@ import RegisterViewModel from "./ViewModel";
 
 const RegisterScreen = ({navigation}: PropsStackNavigation) => {
 
-    const {onChangeRegister, register, age, password, confirmPassword, phone, email, name, success} = RegisterViewModel()
+    const {onChangeRegister, register, age, password, confirmPassword, phone, email, name} = RegisterViewModel()
     const handleRegister = async () => {
-        await register()
-        if (success){
+        const response = await register()
+        if (response?.data){
             setTimeout(() => {
                 navigation.navigate("LoginScreen");
             }, 1000);
