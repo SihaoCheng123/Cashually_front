@@ -4,6 +4,6 @@ import {ApiResponse} from "../../../data/sources/remote/models/ResponseApiDelive
 
 const {login} = new AuthRepositoryImpl();
 
-export const LoginUseCase= async (user: UserLoginRequest): Promise<ApiResponse<UserLoginResponse>> => {
+export const LoginUseCase= async (user: UserLoginRequest): Promise<ApiResponse> => {
     return await login(user);
 }

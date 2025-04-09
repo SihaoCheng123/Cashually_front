@@ -5,11 +5,20 @@ import {useState} from "react";
 
 interface AddAccountProps {
     onClose: () => void;
-
+    onSubmit: (data:{
+        name: string,
+        balance: number,
+    }) => void;
 }
-export const AddAccountModal = ({onClose}:AddAccountProps) => {
-    const [text, setText] = useState("");
+export const AddAccountModal = ({onClose, onSubmit}:AddAccountProps) => {
+    const [amount, setAmount] = useState("");
+    const [name, setName] = useState("");
 
+    const parsedAmount = Number(amount);
+    const handleSubmit = () => {
+        onSubmit({name: name, balance: parsedAmount})
+        onClose()
+    }
     return(
         <Modal transparent animationType="fade">
             <TouchableWithoutFeedback onPress={() => { onClose(); Keyboard.dismiss(); }}>
@@ -20,16 +29,14 @@ export const AddAccountModal = ({onClose}:AddAccountProps) => {
                     <Text style={styles.newText}>New account</Text>
                         <View style={styles.inputContainer}>
                             <Text style={styles.inputText}>Name</Text>
-                            <TextInput mode={"outlined"}
-                                       value={text} onChangeText={setText}
+                            <TextInput mode={"outlined"} onChangeText={setName}
                                        theme={{roundness:15, colors:{
                                                primary: AppTheme.colors.grey,
                                                background: AppTheme.colors.white}}}/>
                         </View>
                         <View style={{...styles.inputContainer, width: "50%", alignSelf: "center"}}>
-                            <Text style={styles.inputText}>Account</Text>
-                            <TextInput mode={"outlined"}
-                                       value={text} onChangeText={setText}
+                            <Text style={styles.inputText}>Balance</Text>
+                            <TextInput mode={"outlined"} onChangeText={setAmount}
                                        theme={{roundness:15, colors:{
                                                primary: AppTheme.colors.grey,
                                                background: AppTheme.colors.white}}}/>
@@ -41,7 +48,7 @@ export const AddAccountModal = ({onClose}:AddAccountProps) => {
                                     labelStyle={{fontFamily: AppTheme.fonts.regular, fontSize:24, lineHeight: 50,
                                     paddingHorizontal:20, textAlign: "center"}}
                                     style={styles.button}
-                                    onPress={onClose}
+                                    onPress={handleSubmit}
                             >Add</Button>
                         </View>
                     </View>

@@ -39,15 +39,12 @@ function TabNavigator() {
                     style: {
                             elevation: 0,
                             shadowOpacity: 0,
-                        }}}
-            >
-
+                        }}}>
                 <Tab.Screen
                     name="Graph"
                     options={{
                         tabBarLabel: false,
                         tabBarPressColor: 'transparent',
-
                         tabBarIcon: ({ color } : {color:string}) => (
                             <View style={{alignItems:"center", justifyContent:"center", top:5}}>
                                 <Image
@@ -55,11 +52,8 @@ function TabNavigator() {
                                     style={[styles.icon, { tintColor: color }]}
                                 />
                             </View>
-                        ),
-
-                    }}
-                    component={GraphScreen}
-                />
+                        ),}}
+                    component={GraphScreen}/>
                 <Tab.Screen
                     name="Home"
                     options={{
@@ -73,9 +67,7 @@ function TabNavigator() {
                             />
                             </View>
                         ),
-                    }}
-                    component={HomeScreen}
-                />
+                    }} component={HomeScreen}/>
                 <Tab.Screen
                     name="User"
                     options={{
@@ -90,8 +82,7 @@ function TabNavigator() {
                             </View>
                         ),
                     }}
-                    component={UserScreen}
-                />
+                    component={UserScreen}/>
             </Tab.Navigator>
         </PaperProvider>
 

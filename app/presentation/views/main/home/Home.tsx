@@ -5,17 +5,44 @@ import {AccountCard} from "../../../components/accounts/Card";
 import {AccountInterface} from "../../../../domain/entities/Account";
 import {ActivityItem} from "../../../components/activity/ActivityItem";
 import {TransactionInterface} from "../../../../domain/entities/Activity";
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {AddAccountModal} from "../../../components/modals/AddAccount";
 import stylesHome from "./StylesHome";
 import {PropsStackNavigation} from "../../../interfaces/StackNav";
+import HomeViewModel from "./ViewModel";
+import {UserContext} from "../../../context/UserContext";
+import Toast from "react-native-toast-message";
 
 const HomeScreen = ({navigation}:PropsStackNavigation) => {
-    const cards: AccountInterface[] = [{name:"Cash", balance: 1235, slug: "Cash"}];
+    const {accounts, getAccounts, createAccount} = HomeViewModel()
+    const {user} = useContext(UserContext)
+
     const [isModalVisible, setIsModalVisible] = useState(false);
     const openModal = () => {
         setIsModalVisible(true);
     };
+
+    useEffect(() => {
+        const handleAccountFetching  = async () =>{
+            if (user && user?.slug){
+                await getAccounts(user.slug)
+            }
+        }
+       handleAccountFetching()
+    },[user.slug])
+
+    const handleModalSubmit = async (modalData:{name: string, balance: number}) => {
+        if (user && user?.slug){
+            const accountData: AccountInterface = {
+                ...modalData,
+            }
+            console.log(accountData)
+            await createAccount(accountData, user.slug)
+            await getAccounts(user.slug)
+        }
+
+    }
+
     const transactions: TransactionInterface[] = [
         {concept: "Salary", amount: 1200, date: "2025-04-06T00:00:00+02:00"},
         {category: "food", amount: 25, date: "2025-04-07T00:00:00+02:00"},
@@ -36,7 +63,7 @@ const HomeScreen = ({navigation}:PropsStackNavigation) => {
                 </Pressable>
             </View>
             <View style={stylesHome.cardsContainer}>
-                <AccountCard accounts={cards} openModal={openModal}/>
+                <AccountCard accounts={accounts} openModal={openModal}/>
             </View>
             <View style={stylesHome.sectionContainer}>
                 <View style={stylesHome.eachSection}>
@@ -77,9 +104,9 @@ const HomeScreen = ({navigation}:PropsStackNavigation) => {
                 <ActivityItem transactions={transactions}/>
             </View>
                 {isModalVisible && (
-                    <AddAccountModal onClose={() => setIsModalVisible(false)}/>
+                    <AddAccountModal onClose={() => setIsModalVisible(false)} onSubmit={handleModalSubmit}/>
                 )}
-
+            <Toast/>
         </SafeAreaView>
     )
 }
